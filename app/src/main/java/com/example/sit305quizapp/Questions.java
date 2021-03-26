@@ -30,7 +30,7 @@ public class Questions {
                 "Answer 2");
 
         questions[3] = new Question(
-                "Question 4",
+                "Question ",
                 "Question 4 details",
                 "Answer 1",
                 "Answer 2",
