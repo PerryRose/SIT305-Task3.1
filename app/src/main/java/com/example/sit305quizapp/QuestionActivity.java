@@ -1,5 +1,6 @@
 package com.example.sit305quizapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,10 +17,14 @@ public class QuestionActivity extends AppCompatActivity {
     TextView welcomeTextView, progressTextView, questionTitleTextView, questionDetailsTextView;
     ProgressBar progressBar;
     Button answer1Button, answer2Button, answer3Button, nextButton;
+    String name;
 
     int currentQuestionNumber = 1;
     int progress = 20;
     int correctAnswers = 0;
+
+    Question[] questions = new Questions().getQuestions();
+    Question currentQuestion = questions[currentQuestionNumber - 1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,17 @@ public class QuestionActivity extends AppCompatActivity {
 
         setUpWidgets();
         displayQuestionData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     private void setUpWidgets() {
@@ -42,13 +58,10 @@ public class QuestionActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.btnNext);
     }
 
-    Question[] questions = new Questions().getQuestions();
-    Question currentQuestion = questions[currentQuestionNumber - 1];
-
     private void displayQuestionData() {
         Intent intent = getIntent();
 
-        String name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
         welcomeTextView.setText("Welcome " + name);
 
         progressTextView.setText(currentQuestionNumber + "/ 5");
@@ -71,14 +84,16 @@ public class QuestionActivity extends AppCompatActivity {
             displayQuestionData();
         }
         else {
-            // Quiz is done
+            Intent intent = new Intent(getApplicationContext(), ResultsActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("score", correctAnswers);
+            startActivityForResult(intent, 1);
         }
     }
 
     public void checkAnswer(View view) {
         switch (view.getId()) {
             case R.id.btnAnswer1:
-
                 if (currentQuestion.correctAnswer == "Answer 1") {
                     correctAnswers++;
                     answer1Button.setBackgroundColor(Color.GREEN);
@@ -87,11 +102,8 @@ public class QuestionActivity extends AppCompatActivity {
                     answer1Button.setBackgroundColor(Color.RED);
                     setCorrectAnswerButtonColor();
                 }
-
                 break;
-
             case R.id.btnAnswer2:
-
                 if (currentQuestion.correctAnswer == "Answer 2") {
                     correctAnswers++;
                     answer2Button.setBackgroundColor(Color.GREEN);
@@ -100,11 +112,8 @@ public class QuestionActivity extends AppCompatActivity {
                     answer2Button.setBackgroundColor(Color.RED);
                     setCorrectAnswerButtonColor();
                 }
-
                 break;
-
             case R.id.btnAnswer3:
-
                 if (currentQuestion.correctAnswer == "Answer 3") {
                     correctAnswers++;
                     answer3Button.setBackgroundColor(Color.GREEN);
@@ -114,7 +123,6 @@ public class QuestionActivity extends AppCompatActivity {
                     setCorrectAnswerButtonColor();
                 }
                 break;
-
             default: break;
         }
     }
