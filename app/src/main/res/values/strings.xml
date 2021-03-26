@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SIT305 Quiz App</string>
+    <string name="nameTextViewString">Enter your name:</string>
+    <string name="startBtnString">START</string>
+</resources>
