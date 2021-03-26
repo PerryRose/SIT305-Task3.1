@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class QuestionActivity extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class QuestionActivity extends AppCompatActivity {
     int currentQuestionNumber = 1;
     int progress = 20;
     int correctAnswers = 0;
+    int maxQuestions = 5;
 
     Question[] questions = new Questions().getQuestions();
     Question currentQuestion = questions[currentQuestionNumber - 1];
@@ -78,10 +80,13 @@ public class QuestionActivity extends AppCompatActivity {
     public void nextQuestion(View view) {
         resetButtonColors();
 
-        if (currentQuestionNumber < 5) {
+        if (currentQuestionNumber < maxQuestions) {
             currentQuestion = questions[currentQuestionNumber++];
             progress += 20;
             displayQuestionData();
+
+            // Remove welcome text view after first question
+            if (welcomeTextView.getVisibility() == View.VISIBLE) welcomeTextView.setVisibility(View.GONE);
         }
         else {
             Intent intent = new Intent(getApplicationContext(), ResultsActivity.class);

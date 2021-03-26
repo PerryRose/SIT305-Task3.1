@@ -16,9 +16,6 @@ public class MainActivity extends AppCompatActivity {
     EditText nameEditText;
     Button startBtn;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,18 +27,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startQuiz(View view) {
-
+        // If user has entered their name
         if (!nameEditText.getText().toString().isEmpty()) {
             sendQuizData();
         }
         else {
             Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void sendQuizData() {
         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+        // Pass name to QuestionsActivity
         intent.putExtra("name", nameEditText.getText().toString());
         startActivityForResult(intent, 1);
     }
